@@ -2,4 +2,10 @@
 
 Docker image for a self-hosted sync server for [Anki](https://github.com/ankitects/anki/).
 
-ref: https://github.com/ankitects/anki/blob/main/docs/syncserver/Dockerfile
+`docker pull ghcr.io/daviehh/anki-sync-svr:latest`
+
+[packaged](https://github.com/daviehh/anki_sync_server/pkgs/container/anki-sync-svr)
+
+---
+
+[ref](https://github.com/ankitects/anki/blob/main/docs/syncserver/Dockerfile)
