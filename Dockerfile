@@ -5,15 +5,15 @@ FROM rust:alpine AS builder
 
 RUN apk update && apk add --no-cache build-base protobuf curl jq && rm -rf /var/cache/apk/*
 RUN cargo install --git https://github.com/ankitects/anki.git \
-    --tag "$(curl -s 'https://api.github.com/repos/ankitects/anki/tags' | jq -r '.[0].name')" \
-    --root /anki-server  \
-    anki-sync-server
+	--tag "$(curl -s 'https://api.github.com/repos/ankitects/anki/tags' | jq -r '.[0].name')" \
+	--root /anki-server  \
+	anki-sync-server
 
 FROM alpine:latest
 
 RUN (addgroup -g 100 ankigrp || true) && \
 	adduser -D -h /home/anki anki \
-    --uid 1030 --ingroup "$(getent group 100 | cut -d: -f1)"
+	--uid 1030 --ingroup "$(getent group 100 | cut -d: -f1)"
 
 COPY --from=builder /anki-server/bin/anki-sync-server /usr/local/bin/anki-sync-server
 
