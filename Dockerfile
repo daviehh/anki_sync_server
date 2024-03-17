@@ -1,7 +1,7 @@
 FROM rust:alpine AS builder
 
-ARG UID=1030
-ARG GID=100
+# ARG UID=1030
+# ARG GID=100
 
 RUN apk update && apk add --no-cache build-base protobuf curl jq && rm -rf /var/cache/apk/*
 RUN cargo install --git https://github.com/ankitects/anki.git \
@@ -11,8 +11,9 @@ RUN cargo install --git https://github.com/ankitects/anki.git \
 
 FROM alpine:latest
 
-RUN adduser -D -h /home/anki anki \
-    --uid $UID --ingroup "$(getent group 100 | cut -d: -f1)"
+RUN (addgroup -g 100 ankigrp || true) && \
+	adduser -D -h /home/anki anki \
+    --uid 1030 --ingroup "$(getent group 100 | cut -d: -f1)"
 
 COPY --from=builder /anki-server/bin/anki-sync-server /usr/local/bin/anki-sync-server
 
