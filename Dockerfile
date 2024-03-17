@@ -6,7 +6,7 @@ FROM rust:alpine AS builder
 RUN apk update && apk add --no-cache build-base protobuf curl jq && rm -rf /var/cache/apk/*
 RUN cargo install --git https://github.com/ankitects/anki.git \
 	--tag "$(curl -s 'https://api.github.com/repos/ankitects/anki/tags' | jq -r '.[0].name')" \
-	--root /anki-server  \
+	--root /anki-server \
 	anki-sync-server
 
 FROM alpine:latest
