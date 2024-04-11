@@ -1,6 +1,6 @@
-FROM rust:alpine AS builder
+FROM rust:1-slim-bookworm AS builder
 
-RUN apk update && apk add --no-cache build-base protobuf curl jq && \
+RUN apt-get update -y && apt-get install -y build-essential protobuf-compiler curl jq && \
 	echo -n "$(curl -s 'https://api.github.com/repos/ankitects/anki/tags' | jq -r '.[0].name')" > /etc/ankitag && \
 	echo "> compile: anki tag [$(cat /etc/ankitag)]" && \
 	cargo install --git https://github.com/ankitects/anki.git \
@@ -9,18 +9,19 @@ RUN apk update && apk add --no-cache build-base protobuf curl jq && \
 	anki-sync-server
 
 
-FROM alpine:latest
+FROM debian:bookworm-slim
 
 ARG UID=1030
 ARG GID=100
 
-RUN (addgroup -g $GID ankigrp || true) && \
-	adduser -D -h /home/anki anki \
-	--uid $UID --ingroup "$(getent group $GID | cut -d: -f1)"
+RUN (addgroup --gid $GID ankigrp || true) && \
+	adduser --home /home/anki \
+	--uid $UID --gid $GID \
+	anki
 
 COPY --from=builder /anki-server/bin/anki-sync-server /usr/local/bin/anki-sync-server
 
-RUN apk update && apk add --no-cache bash && rm -rf /var/cache/apk/*
+RUN apt-get update -y && apt-get install -y bash && apt-get clean -y
 
 USER anki
 
