@@ -8,4 +8,4 @@ Auto-built with github actions.
 
 ---
 
-tagged: 24.06rc1
+tagged: 24.06rc2
