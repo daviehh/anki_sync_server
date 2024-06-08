@@ -8,4 +8,5 @@ Auto-built with github actions.
 
 ---
 
-tagged: 24.06
+tagged: 
+24.06.1
