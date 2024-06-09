@@ -9,4 +9,4 @@ Auto-built with github actions.
 ---
 
 tagged: 
-24.06.1
+24.06.2
