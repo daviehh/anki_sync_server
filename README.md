@@ -6,7 +6,3 @@ Auto-built with github actions.
 
 `docker pull ghcr.io/daviehh/anki-sync-svr:latest`
 
----
-
-tagged: 
-24.06.2
