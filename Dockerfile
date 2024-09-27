@@ -1,7 +1,7 @@
 FROM rust:1-slim-bookworm AS builder
 
-RUN apt-get update -y && apt-get install -y build-essential protobuf-compiler curl jq && \
-	echo -n "$(curl -s 'https://api.github.com/repos/ankitects/anki/tags' | jq -r '.[0].name')" > /etc/ankitag && \
+COPY version /etc/ankitag
+RUN apt-get update -y && apt-get install -y build-essential protobuf-compiler && \
 	echo "> compile: anki tag [$(cat /etc/ankitag)]" && \
 	cargo install --git https://github.com/ankitects/anki.git \
 	--tag $(cat /etc/ankitag) \
