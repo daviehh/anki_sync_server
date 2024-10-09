@@ -1,7 +1,7 @@
 FROM rust:alpine AS builder
 
+COPY version /etc/ankitag
 RUN apk update && apk add --no-cache build-base protobuf curl jq && \
-	echo -n "$(curl -s 'https://api.github.com/repos/ankitects/anki/tags' | jq -r '.[0].name')" > /etc/ankitag && \
 	echo "> compile: anki tag [$(cat /etc/ankitag)]" && \
 	cargo install --git https://github.com/ankitects/anki.git \
 	--tag $(cat /etc/ankitag) \
